@@ -1,0 +1,4 @@
+Bundle-Name: first-portlet
+Bundle-SymbolicName: com.first
+Bundle-Version: 1.0.0
+Export-Package: com.first.constants
