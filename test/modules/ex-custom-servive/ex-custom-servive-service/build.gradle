@@ -1,0 +1,12 @@
+dependencies {
+	compile project(":modules:ex-custom-servive:ex-custom-servive-api")
+compileOnly group: "com.liferay", name: "com.liferay.portal.dao.orm.custom.sql.api", version: "1.0.0"
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../ex-custom-servive-api/src/main/java"
+}
+
+group = "com.custom"

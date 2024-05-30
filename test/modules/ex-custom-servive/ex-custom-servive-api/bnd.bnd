@@ -1,0 +1,10 @@
+Bundle-Name: ex-custom-servive-api
+Bundle-SymbolicName: com.custom.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.custom.exception,\
+	com.custom.model,\
+	com.custom.service,\
+	com.custom.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../ex-custom-servive-service/service.xml
