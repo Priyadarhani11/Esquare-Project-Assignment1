@@ -14,11 +14,16 @@
 
 		<column name="studentId" primary="true" type="long" />
 		<column name="studentName" type="String" />
+		
+		  <finder name="studentName" return-type="Collection">
+            <finder-column name="studentName"></finder-column>
+        </finder>
+   		
 	</entity>
+	
 	<entity name="MyEntity" local-service="true" remote-service="false">
     <column name="id" type="long" primary="true" />
     <column name="name" type="String" />
-    <column name="description" type="String" />
-   
+    <column name="description" type="String" />            
 </entity>
 </service-builder>

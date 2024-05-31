@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.custom.service.persistence;
@@ -118,6 +109,174 @@ public class StudentUtil {
 		Student student, ServiceContext serviceContext) {
 
 		return getPersistence().update(student, serviceContext);
+	}
+
+	/**
+	 * Returns all the students where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @return the matching students
+	 */
+	public static List<Student> findBystudentName(String studentName) {
+		return getPersistence().findBystudentName(studentName);
+	}
+
+	/**
+	 * Returns a range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @return the range of matching students
+	 */
+	public static List<Student> findBystudentName(
+		String studentName, int start, int end) {
+
+		return getPersistence().findBystudentName(studentName, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching students
+	 */
+	public static List<Student> findBystudentName(
+		String studentName, int start, int end,
+		OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().findBystudentName(
+			studentName, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching students
+	 */
+	public static List<Student> findBystudentName(
+		String studentName, int start, int end,
+		OrderByComparator<Student> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findBystudentName(
+			studentName, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	public static Student findBystudentName_First(
+			String studentName, OrderByComparator<Student> orderByComparator)
+		throws com.custom.exception.NoSuchStudentException {
+
+		return getPersistence().findBystudentName_First(
+			studentName, orderByComparator);
+	}
+
+	/**
+	 * Returns the first student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchBystudentName_First(
+		String studentName, OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().fetchBystudentName_First(
+			studentName, orderByComparator);
+	}
+
+	/**
+	 * Returns the last student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	public static Student findBystudentName_Last(
+			String studentName, OrderByComparator<Student> orderByComparator)
+		throws com.custom.exception.NoSuchStudentException {
+
+		return getPersistence().findBystudentName_Last(
+			studentName, orderByComparator);
+	}
+
+	/**
+	 * Returns the last student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchBystudentName_Last(
+		String studentName, OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().fetchBystudentName_Last(
+			studentName, orderByComparator);
+	}
+
+	/**
+	 * Returns the students before and after the current student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentId the primary key of the current student
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next student
+	 * @throws NoSuchStudentException if a student with the primary key could not be found
+	 */
+	public static Student[] findBystudentName_PrevAndNext(
+			long studentId, String studentName,
+			OrderByComparator<Student> orderByComparator)
+		throws com.custom.exception.NoSuchStudentException {
+
+		return getPersistence().findBystudentName_PrevAndNext(
+			studentId, studentName, orderByComparator);
+	}
+
+	/**
+	 * Removes all the students where studentName = &#63; from the database.
+	 *
+	 * @param studentName the student name
+	 */
+	public static void removeBystudentName(String studentName) {
+		getPersistence().removeBystudentName(studentName);
+	}
+
+	/**
+	 * Returns the number of students where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @return the number of matching students
+	 */
+	public static int countBystudentName(String studentName) {
+		return getPersistence().countBystudentName(studentName);
 	}
 
 	/**
@@ -269,6 +428,10 @@ public class StudentUtil {
 
 	public static StudentPersistence getPersistence() {
 		return _persistence;
+	}
+
+	public static void setPersistence(StudentPersistence persistence) {
+		_persistence = persistence;
 	}
 
 	private static volatile StudentPersistence _persistence;

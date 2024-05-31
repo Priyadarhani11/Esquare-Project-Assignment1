@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.custom.model.impl;
@@ -97,11 +88,17 @@ public class StudentModelImpl
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
 	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long STUDENTNAME_COLUMN_BITMASK = 1L;
+
+	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long STUDENTID_COLUMN_BITMASK = 1L;
+	public static final long STUDENTID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -192,38 +189,53 @@ public class StudentModelImpl
 	public Map<String, Function<Student, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<Student, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<Student, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<Student, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<Student, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<Student, Object>>();
-		Map<String, BiConsumer<Student, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<Student, ?>>();
+		private static final Map<String, Function<Student, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put("studentId", Student::getStudentId);
-		attributeSetterBiConsumers.put(
-			"studentId", (BiConsumer<Student, Long>)Student::setStudentId);
-		attributeGetterFunctions.put("studentName", Student::getStudentName);
-		attributeSetterBiConsumers.put(
-			"studentName",
-			(BiConsumer<Student, String>)Student::setStudentName);
+		static {
+			Map<String, Function<Student, Object>> attributeGetterFunctions =
+				new LinkedHashMap<String, Function<Student, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put("studentId", Student::getStudentId);
+			attributeGetterFunctions.put(
+				"studentName", Student::getStudentName);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<Student, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<Student, ?>> attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<Student, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"studentId", (BiConsumer<Student, Long>)Student::setStudentId);
+			attributeSetterBiConsumers.put(
+				"studentName",
+				(BiConsumer<Student, String>)Student::setStudentName);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@JSON
@@ -259,6 +271,15 @@ public class StudentModelImpl
 		}
 
 		_studentName = studentName;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalStudentName() {
+		return getColumnOriginalValue("studentName");
 	}
 
 	public long getColumnBitmask() {
@@ -483,8 +504,9 @@ public class StudentModelImpl
 	private String _studentName;
 
 	public <T> T getColumnValue(String columnName) {
-		Function<Student, Object> function = _attributeGetterFunctions.get(
-			columnName);
+		Function<Student, Object> function =
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

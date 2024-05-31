@@ -24,11 +24,13 @@ import org.osgi.service.component.annotations.Reference;
 	service = AopService.class
 )
 public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
-	public List<Student> getStudentsByName(String sName){
-		return studentFinder.getStudentsByName(sName);
+	
+	
+	public List<Student> findByStudentName(String studentName){
+		return studentPersistence.findBystudentName(studentName);
 	}
-	@Reference
-	private StudentLocalService studentLocalService;
+//	@Reference
+//	private StudentLocalService studentLocalService;
 	
 	//List<Student> sname= studentLocalService.getStudentByName("Sample");
 	

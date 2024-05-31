@@ -21,19 +21,19 @@ public class StudentFinderImpl extends StudentFinderBaseImpl implements StudentF
 @Reference
 CustomSQL _customSql;
 
-public List<Student>  getStudentsByName(String sName){
+public List<Student>  getStudentsByName(String studentName){
 	System.out.println("Inside custom sql");
 	 Session session=null;
 	
 	 try {
 		 session=openSession();
-		 String sql=_customSql.get(getClass(),"getStudentsByName");
+		 String sql=_customSql.get(getClass(),"getStudentByName");
 		 System.out.println("sql------------->"+sql);
 		 SQLQuery sqlQuery=session.createSQLQuery(sql);
 				 sqlQuery.setCacheable(false);
          sqlQuery.addEntity("Student",StudentImpl.class);
          QueryPos queryPos=QueryPos.getInstance(sqlQuery);
-         queryPos.add(sName);
+         queryPos.add(studentName);
          return (List<Student>)sqlQuery.list();
  }catch(Exception e){
   

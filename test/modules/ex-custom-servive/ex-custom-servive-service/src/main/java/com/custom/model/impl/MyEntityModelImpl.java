@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.custom.model.impl;
@@ -191,41 +182,56 @@ public class MyEntityModelImpl
 	public Map<String, Function<MyEntity, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<MyEntity, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<MyEntity, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<MyEntity, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<MyEntity, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<MyEntity, Object>>();
-		Map<String, BiConsumer<MyEntity, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<MyEntity, ?>>();
+		private static final Map<String, Function<MyEntity, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put("id", MyEntity::getId);
-		attributeSetterBiConsumers.put(
-			"id", (BiConsumer<MyEntity, Long>)MyEntity::setId);
-		attributeGetterFunctions.put("name", MyEntity::getName);
-		attributeSetterBiConsumers.put(
-			"name", (BiConsumer<MyEntity, String>)MyEntity::setName);
-		attributeGetterFunctions.put("description", MyEntity::getDescription);
-		attributeSetterBiConsumers.put(
-			"description",
-			(BiConsumer<MyEntity, String>)MyEntity::setDescription);
+		static {
+			Map<String, Function<MyEntity, Object>> attributeGetterFunctions =
+				new LinkedHashMap<String, Function<MyEntity, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put("id", MyEntity::getId);
+			attributeGetterFunctions.put("name", MyEntity::getName);
+			attributeGetterFunctions.put(
+				"description", MyEntity::getDescription);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<MyEntity, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<MyEntity, ?>> attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<MyEntity, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"id", (BiConsumer<MyEntity, Long>)MyEntity::setId);
+			attributeSetterBiConsumers.put(
+				"name", (BiConsumer<MyEntity, String>)MyEntity::setName);
+			attributeSetterBiConsumers.put(
+				"description",
+				(BiConsumer<MyEntity, String>)MyEntity::setDescription);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@Override
@@ -514,8 +520,9 @@ public class MyEntityModelImpl
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
-		Function<MyEntity, Object> function = _attributeGetterFunctions.get(
-			columnName);
+		Function<MyEntity, Object> function =
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(

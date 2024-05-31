@@ -1,15 +1,6 @@
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
 package com.custom.service.persistence.impl;
@@ -29,6 +20,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -39,13 +31,15 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -86,6 +80,543 @@ public class StudentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindBystudentName;
+	private FinderPath _finderPathWithoutPaginationFindBystudentName;
+	private FinderPath _finderPathCountBystudentName;
+
+	/**
+	 * Returns all the students where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @return the matching students
+	 */
+	@Override
+	public List<Student> findBystudentName(String studentName) {
+		return findBystudentName(
+			studentName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @return the range of matching students
+	 */
+	@Override
+	public List<Student> findBystudentName(
+		String studentName, int start, int end) {
+
+		return findBystudentName(studentName, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching students
+	 */
+	@Override
+	public List<Student> findBystudentName(
+		String studentName, int start, int end,
+		OrderByComparator<Student> orderByComparator) {
+
+		return findBystudentName(
+			studentName, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where studentName = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param studentName the student name
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching students
+	 */
+	@Override
+	public List<Student> findBystudentName(
+		String studentName, int start, int end,
+		OrderByComparator<Student> orderByComparator, boolean useFinderCache) {
+
+		studentName = Objects.toString(studentName, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindBystudentName;
+				finderArgs = new Object[] {studentName};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindBystudentName;
+			finderArgs = new Object[] {
+				studentName, start, end, orderByComparator
+			};
+		}
+
+		List<Student> list = null;
+
+		if (useFinderCache) {
+			list = (List<Student>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Student student : list) {
+					if (!studentName.equals(student.getStudentName())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_STUDENT_WHERE);
+
+			boolean bindStudentName = false;
+
+			if (studentName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_3);
+			}
+			else {
+				bindStudentName = true;
+
+				sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(StudentModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindStudentName) {
+					queryPos.add(studentName);
+				}
+
+				list = (List<Student>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	@Override
+	public Student findBystudentName_First(
+			String studentName, OrderByComparator<Student> orderByComparator)
+		throws NoSuchStudentException {
+
+		Student student = fetchBystudentName_First(
+			studentName, orderByComparator);
+
+		if (student != null) {
+			return student;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("studentName=");
+		sb.append(studentName);
+
+		sb.append("}");
+
+		throw new NoSuchStudentException(sb.toString());
+	}
+
+	/**
+	 * Returns the first student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student, or <code>null</code> if a matching student could not be found
+	 */
+	@Override
+	public Student fetchBystudentName_First(
+		String studentName, OrderByComparator<Student> orderByComparator) {
+
+		List<Student> list = findBystudentName(
+			studentName, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	@Override
+	public Student findBystudentName_Last(
+			String studentName, OrderByComparator<Student> orderByComparator)
+		throws NoSuchStudentException {
+
+		Student student = fetchBystudentName_Last(
+			studentName, orderByComparator);
+
+		if (student != null) {
+			return student;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("studentName=");
+		sb.append(studentName);
+
+		sb.append("}");
+
+		throw new NoSuchStudentException(sb.toString());
+	}
+
+	/**
+	 * Returns the last student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student, or <code>null</code> if a matching student could not be found
+	 */
+	@Override
+	public Student fetchBystudentName_Last(
+		String studentName, OrderByComparator<Student> orderByComparator) {
+
+		int count = countBystudentName(studentName);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Student> list = findBystudentName(
+			studentName, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the students before and after the current student in the ordered set where studentName = &#63;.
+	 *
+	 * @param studentId the primary key of the current student
+	 * @param studentName the student name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next student
+	 * @throws NoSuchStudentException if a student with the primary key could not be found
+	 */
+	@Override
+	public Student[] findBystudentName_PrevAndNext(
+			long studentId, String studentName,
+			OrderByComparator<Student> orderByComparator)
+		throws NoSuchStudentException {
+
+		studentName = Objects.toString(studentName, "");
+
+		Student student = findByPrimaryKey(studentId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Student[] array = new StudentImpl[3];
+
+			array[0] = getBystudentName_PrevAndNext(
+				session, student, studentName, orderByComparator, true);
+
+			array[1] = student;
+
+			array[2] = getBystudentName_PrevAndNext(
+				session, student, studentName, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Student getBystudentName_PrevAndNext(
+		Session session, Student student, String studentName,
+		OrderByComparator<Student> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_STUDENT_WHERE);
+
+		boolean bindStudentName = false;
+
+		if (studentName.isEmpty()) {
+			sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_3);
+		}
+		else {
+			bindStudentName = true;
+
+			sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(StudentModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindStudentName) {
+			queryPos.add(studentName);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(student)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Student> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the students where studentName = &#63; from the database.
+	 *
+	 * @param studentName the student name
+	 */
+	@Override
+	public void removeBystudentName(String studentName) {
+		for (Student student :
+				findBystudentName(
+					studentName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(student);
+		}
+	}
+
+	/**
+	 * Returns the number of students where studentName = &#63;.
+	 *
+	 * @param studentName the student name
+	 * @return the number of matching students
+	 */
+	@Override
+	public int countBystudentName(String studentName) {
+		studentName = Objects.toString(studentName, "");
+
+		FinderPath finderPath = _finderPathCountBystudentName;
+
+		Object[] finderArgs = new Object[] {studentName};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_STUDENT_WHERE);
+
+			boolean bindStudentName = false;
+
+			if (studentName.isEmpty()) {
+				sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_3);
+			}
+			else {
+				bindStudentName = true;
+
+				sb.append(_FINDER_COLUMN_STUDENTNAME_STUDENTNAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindStudentName) {
+					queryPos.add(studentName);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_STUDENTNAME_STUDENTNAME_2 =
+		"student.studentName = ?";
+
+	private static final String _FINDER_COLUMN_STUDENTNAME_STUDENTNAME_3 =
+		"(student.studentName IS NULL OR student.studentName = '')";
 
 	public StudentPersistenceImpl() {
 		setModelClass(Student.class);
@@ -277,6 +808,24 @@ public class StudentPersistenceImpl
 	public Student updateImpl(Student student) {
 		boolean isNew = student.isNew();
 
+		if (!(student instanceof StudentModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(student.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(student);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in student proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom Student implementation " +
+					student.getClass());
+		}
+
+		StudentModelImpl studentModelImpl = (StudentModelImpl)student;
+
 		Session session = null;
 
 		try {
@@ -296,7 +845,7 @@ public class StudentPersistenceImpl
 			closeSession(session);
 		}
 
-		entityCache.putResult(StudentImpl.class, student, false, true);
+		entityCache.putResult(StudentImpl.class, studentModelImpl, false, true);
 
 		if (isNew) {
 			student.setNew(false);
@@ -576,29 +1125,32 @@ public class StudentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
-		_setStudentUtilPersistence(this);
+		_finderPathWithPaginationFindBystudentName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBystudentName",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"studentName"}, true);
+
+		_finderPathWithoutPaginationFindBystudentName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBystudentName",
+			new String[] {String.class.getName()}, new String[] {"studentName"},
+			true);
+
+		_finderPathCountBystudentName = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBystudentName",
+			new String[] {String.class.getName()}, new String[] {"studentName"},
+			false);
+
+		StudentUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setStudentUtilPersistence(null);
+		StudentUtil.setPersistence(null);
 
 		entityCache.removeCache(StudentImpl.class.getName());
-	}
-
-	private void _setStudentUtilPersistence(
-		StudentPersistence studentPersistence) {
-
-		try {
-			Field field = StudentUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, studentPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override
@@ -636,13 +1188,22 @@ public class StudentPersistenceImpl
 	private static final String _SQL_SELECT_STUDENT =
 		"SELECT student FROM Student student";
 
+	private static final String _SQL_SELECT_STUDENT_WHERE =
+		"SELECT student FROM Student student WHERE ";
+
 	private static final String _SQL_COUNT_STUDENT =
 		"SELECT COUNT(student) FROM Student student";
+
+	private static final String _SQL_COUNT_STUDENT_WHERE =
+		"SELECT COUNT(student) FROM Student student WHERE ";
 
 	private static final String _ORDER_BY_ENTITY_ALIAS = "student.";
 
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
 		"No Student exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No Student exists with the key {";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StudentPersistenceImpl.class);
