@@ -218,17 +218,17 @@ public class StudentLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.custom.model.Student> findByStudentName(
-		String studentName) {
-
-		return _studentLocalService.findByStudentName(studentName);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _studentLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.List<com.custom.model.Student> getByStuName(
+		String studentName) {
+
+		return _studentLocalService.getByStuName(studentName);
 	}
 
 	@Override

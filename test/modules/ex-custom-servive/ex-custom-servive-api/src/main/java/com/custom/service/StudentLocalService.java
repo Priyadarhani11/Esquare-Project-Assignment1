@@ -191,10 +191,11 @@ public interface StudentLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Student fetchStudent(long studentId);
 
-	public List<Student> findByStudentName(String studentName);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Student> getByStuName(String studentName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

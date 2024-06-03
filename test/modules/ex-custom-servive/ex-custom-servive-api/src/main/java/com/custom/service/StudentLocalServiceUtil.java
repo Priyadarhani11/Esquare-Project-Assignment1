@@ -199,14 +199,14 @@ public class StudentLocalServiceUtil {
 		return getService().fetchStudent(studentId);
 	}
 
-	public static List<Student> findByStudentName(String studentName) {
-		return getService().findByStudentName(studentName);
-	}
-
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static List<Student> getByStuName(String studentName) {
+		return getService().getByStuName(studentName);
 	}
 
 	public static

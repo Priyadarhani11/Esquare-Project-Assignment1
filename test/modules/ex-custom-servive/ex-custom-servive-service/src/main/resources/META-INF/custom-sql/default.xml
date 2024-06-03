@@ -4,7 +4,7 @@
 
 <sql id ="getStudentByName">
 <![CDATA[
-SELECT * FROM Student s WHERE s.sname =?
+SELECT * FROM test.custom_student s WHERE s.studentName =?
 ]]>
 </sql>
 

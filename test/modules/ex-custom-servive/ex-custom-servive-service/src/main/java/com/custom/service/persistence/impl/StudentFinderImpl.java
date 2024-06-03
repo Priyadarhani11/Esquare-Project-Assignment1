@@ -8,6 +8,7 @@ import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -21,10 +22,10 @@ public class StudentFinderImpl extends StudentFinderBaseImpl implements StudentF
 @Reference
 CustomSQL _customSql;
 
-public List<Student>  getStudentsByName(String studentName){
+public List<Student>  getStuByName(String studentName){
 	System.out.println("Inside custom sql");
 	 Session session=null;
-	
+	List<Student> studentList = Collections.EMPTY_LIST;
 	 try {
 		 session=openSession();
 		 String sql=_customSql.get(getClass(),"getStudentByName");
@@ -34,7 +35,8 @@ public List<Student>  getStudentsByName(String studentName){
          sqlQuery.addEntity("Student",StudentImpl.class);
          QueryPos queryPos=QueryPos.getInstance(sqlQuery);
          queryPos.add(studentName);
-         return (List<Student>)sqlQuery.list();
+         studentList = (List<Student>)sqlQuery.list();
+         return studentList;
  }catch(Exception e){
   
  }finally {

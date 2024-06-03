@@ -26,8 +26,9 @@ import org.osgi.service.component.annotations.Reference;
 public class StudentLocalServiceImpl extends StudentLocalServiceBaseImpl {
 	
 	
-	public List<Student> findByStudentName(String studentName){
-		return studentPersistence.findBystudentName(studentName);
+	public List<Student> getByStuName(String studentName) {
+		return studentFinder.getStuByName(studentName);
+
 	}
 //	@Reference
 //	private StudentLocalService studentLocalService;

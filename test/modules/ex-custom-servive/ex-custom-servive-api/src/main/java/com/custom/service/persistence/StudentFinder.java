@@ -14,7 +14,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface StudentFinder {
 
-	public java.util.List<com.custom.model.Student> getStudentsByName(
+	public java.util.List<com.custom.model.Student> getStuByName(
 		String studentName);
 
 }
