@@ -1,8 +1,7 @@
-package com.first.portlet;
+package com.custom.test.portlet;
 
-import com.custom.service.StudentLocalService;
-import com.first.constants.FirstPortletKeys;
-
+import com.custom.test.constants.CustomPortletKeys;
+import com.employee.service.EmployeeLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Lenovo
+ * @author Dell
  */
 @Component(
 	immediate = true,
@@ -24,26 +23,28 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"com.liferay.portlet.instanceable=true",
-		"javax.portlet.display-name=First",
+		"javax.portlet.display-name=Custom",
 		"javax.portlet.init-param.template-path=/",
-		"javax.portlet.init-param.view-template=/view.jsp",
-		"javax.portlet.name=" + FirstPortletKeys.FIRST,
+		"javax.portlet.init-param.view-template=/query.jsp",
+		"javax.portlet.name=" + CustomPortletKeys.CUSTOM,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
 	service = Portlet.class
 )
-public class FirstPortlet extends MVCPortlet {
+public class CustomPortlet extends MVCPortlet {
 	
 	@Reference
-	private StudentLocalService studentLocalService;
+	private EmployeeLocalService employeeLocalService;
+	
 	@Override
-		public void doView(RenderRequest renderRequest, RenderResponse renderResponse)
-				throws IOException, PortletException {
-		System.out.println(">>>>>>>Inside Do View Method<<<<<<<<<<<");
-		String stuName = studentLocalService.getByStuName("zero").get(0).getStudentName();
-		System.out.println("retrived" + stuName);
+	public void doView(RenderRequest renderRequest, RenderResponse renderResponse)
+			throws IOException, PortletException {
+		System.out.println("Inside Portlet....");
+		String empName = employeeLocalService.getEmployeeByName("aaaa").get(0).getEmployeeAddress();
+		System.out.println("Custom SQL : " + empName);
 		super.doView(renderRequest, renderResponse);
-		}
+	}
+	
 
 }

@@ -1,0 +1,4 @@
+Bundle-Name: custom-portlet
+Bundle-SymbolicName: com.custom.test
+Bundle-Version: 1.0.0
+Export-Package: com.custom.test.constants

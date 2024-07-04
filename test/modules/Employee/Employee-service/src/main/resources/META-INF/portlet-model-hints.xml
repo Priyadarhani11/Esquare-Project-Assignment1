@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.employee.model.Employee">
+		<field name="uuid" type="String" />
+		<field name="employeeId" type="long" />
+		<field name="employeeName" type="String" />
+		<field name="employeeAddress" type="String" />
+	</model>
+</model-hints>

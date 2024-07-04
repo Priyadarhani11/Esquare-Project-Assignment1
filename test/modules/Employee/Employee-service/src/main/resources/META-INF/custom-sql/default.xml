@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom-sql>
+ <sql id="getEmployeeByName"> 
+      <![CDATA[ 
+         select * from demo.employee_employee e where employeeName = ?
+]]>
+   </sql>
+
+
+</custom-sql>
