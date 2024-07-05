@@ -10,6 +10,19 @@
 
 <h4>Sample Dynamic Query</h4>
 
+
+<%
+List<Employee> empList = (List<Employee>) request.getAttribute("emplList1");
+if (empList != null) {
+    for (Employee employee : empList) {
+        out.println("empName"+employee.getEmployeeName() + "<br/>");
+    }
+} else {
+    out.println("Inside custom portlet");
+}
+%>
+
+
 <% 
 	DynamicQuery employeeQuery = DynamicQueryFactoryUtil.forClass(Employee.class, PortalClassLoaderUtil.getClassLoader());
 

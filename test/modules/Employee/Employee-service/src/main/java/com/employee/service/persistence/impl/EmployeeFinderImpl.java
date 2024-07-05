@@ -7,6 +7,7 @@ import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
+import com.liferay.portal.kernel.exception.SystemException;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,5 +45,23 @@ public class EmployeeFinderImpl extends EmployeeFinderBaseImpl implements Employ
 		return employeeList;
 
 	}
-
+	public List<Employee> getEmployeeWithDepartmentByName(String employeeName) {
+		Session session = null;
+		List<Employee> result = Collections.EMPTY_LIST;
+		try {
+			session = openSession();
+			String sql = _customSQL.get(getClass(), "getEmployeeWithDepartmentByName");
+			 SQLQuery sqlQuery = session.createSQLQuery(sql);
+			 sqlQuery.addEntity("Employee", EmployeeImpl.class);
+			 QueryPos queryPos = QueryPos.getInstance(sqlQuery);
+			 queryPos.add(employeeName);
+			 result = (List<Employee>) sqlQuery.list();
+	
+		} catch (Exception e) {
+            throw new SystemException(e);
+        } finally {
+            closeSession(session);
+        }
+        return result;
+    }
 }

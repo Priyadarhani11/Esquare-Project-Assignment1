@@ -4,3 +4,14 @@ Bundle-Version: 1.0.0
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
 -dsannotations-options: inherit
+Export-Package: \
+	com.custom.exception,\
+	com.custom.model,\
+	com.custom.model.impl,\
+	com.custom.service,\
+	com.custom.service.base,\
+	com.custom.service.http,\
+	com.custom.service.impl,\
+	com.custom.service.persistence,\
+	com.custom.service.persistence.impl,\
+	com.custom.service.persistence.impl.constants

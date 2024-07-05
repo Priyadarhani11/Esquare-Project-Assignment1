@@ -230,6 +230,9 @@ public interface EmployeeLocalService
 	public int getEmployeesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Employee> getEmployeeWithDepartmentByName(String employeeName);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**

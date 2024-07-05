@@ -1,10 +1,18 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.employee.model.Department">
+		<field name="uuid" type="String" />
+		<field name="depId" type="long" />
+		<field name="depName" type="String" />
+		<field name="depNo" type="String" />
+		<field name="depAddress" type="String" />
+	</model>
 	<model name="com.employee.model.Employee">
 		<field name="uuid" type="String" />
 		<field name="employeeId" type="long" />
 		<field name="employeeName" type="String" />
 		<field name="employeeAddress" type="String" />
+		<field name="depId" type="long" />
 	</model>
 </model-hints>

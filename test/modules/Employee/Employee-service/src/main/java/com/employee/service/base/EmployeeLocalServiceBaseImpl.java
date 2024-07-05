@@ -8,6 +8,7 @@ package com.employee.service.base;
 import com.employee.model.Employee;
 import com.employee.service.EmployeeLocalService;
 import com.employee.service.EmployeeLocalServiceUtil;
+import com.employee.service.persistence.DepartmentPersistence;
 import com.employee.service.persistence.EmployeeFinder;
 import com.employee.service.persistence.EmployeePersistence;
 
@@ -431,6 +432,9 @@ public abstract class EmployeeLocalServiceBaseImpl
 			throw new SystemException(exception);
 		}
 	}
+
+	@Reference
+	protected DepartmentPersistence departmentPersistence;
 
 	protected EmployeeLocalService employeeLocalService;
 

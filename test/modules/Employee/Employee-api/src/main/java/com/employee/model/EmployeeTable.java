@@ -29,6 +29,8 @@ public class EmployeeTable extends BaseTable<EmployeeTable> {
 		"employeeName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<EmployeeTable, String> employeeAddress = createColumn(
 		"employeeAddress", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<EmployeeTable, Long> depId = createColumn(
+		"depId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 
 	private EmployeeTable() {
 		super("EMPLOYEE_Employee", EmployeeTable::new);

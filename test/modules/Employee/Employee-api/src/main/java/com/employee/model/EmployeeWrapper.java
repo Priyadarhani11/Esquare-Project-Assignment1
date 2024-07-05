@@ -36,6 +36,7 @@ public class EmployeeWrapper
 		attributes.put("employeeId", getEmployeeId());
 		attributes.put("employeeName", getEmployeeName());
 		attributes.put("employeeAddress", getEmployeeAddress());
+		attributes.put("depId", getDepId());
 
 		return attributes;
 	}
@@ -65,11 +66,27 @@ public class EmployeeWrapper
 		if (employeeAddress != null) {
 			setEmployeeAddress(employeeAddress);
 		}
+
+		Long depId = (Long)attributes.get("depId");
+
+		if (depId != null) {
+			setDepId(depId);
+		}
 	}
 
 	@Override
 	public Employee cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
+	}
+
+	/**
+	 * Returns the dep ID of this employee.
+	 *
+	 * @return the dep ID of this employee
+	 */
+	@Override
+	public long getDepId() {
+		return model.getDepId();
 	}
 
 	/**
@@ -125,6 +142,16 @@ public class EmployeeWrapper
 	@Override
 	public void persist() {
 		model.persist();
+	}
+
+	/**
+	 * Sets the dep ID of this employee.
+	 *
+	 * @param depId the dep ID of this employee
+	 */
+	@Override
+	public void setDepId(long depId) {
+		model.setDepId(depId);
 	}
 
 	/**

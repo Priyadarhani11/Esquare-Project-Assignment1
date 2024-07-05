@@ -277,6 +277,14 @@ public class EmployeeLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.employee.model.Employee>
+		getEmployeeWithDepartmentByName(String employeeName) {
+
+		return _employeeLocalService.getEmployeeWithDepartmentByName(
+			employeeName);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 

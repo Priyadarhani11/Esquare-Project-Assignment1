@@ -17,4 +17,7 @@ public interface EmployeeFinder {
 	public java.util.List<com.employee.model.Employee> getEmployeeByName(
 		String employeeName);
 
+	public java.util.List<com.employee.model.Employee>
+		getEmployeeWithDepartmentByName(String employeeName);
+
 }

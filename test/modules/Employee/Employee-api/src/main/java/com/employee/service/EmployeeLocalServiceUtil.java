@@ -246,6 +246,12 @@ public class EmployeeLocalServiceUtil {
 		return getService().getEmployeesCount();
 	}
 
+	public static List<Employee> getEmployeeWithDepartmentByName(
+		String employeeName) {
+
+		return getService().getEmployeeWithDepartmentByName(employeeName);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {

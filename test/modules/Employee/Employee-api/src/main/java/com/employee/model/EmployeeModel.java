@@ -103,6 +103,20 @@ public interface EmployeeModel extends BaseModel<Employee> {
 	 */
 	public void setEmployeeAddress(String employeeAddress);
 
+	/**
+	 * Returns the dep ID of this employee.
+	 *
+	 * @return the dep ID of this employee
+	 */
+	public long getDepId();
+
+	/**
+	 * Sets the dep ID of this employee.
+	 *
+	 * @param depId the dep ID of this employee
+	 */
+	public void setDepId(long depId);
+
 	@Override
 	public Employee cloneWithOriginalValues();
 

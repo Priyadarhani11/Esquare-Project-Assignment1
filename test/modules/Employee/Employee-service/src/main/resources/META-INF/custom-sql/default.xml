@@ -5,6 +5,13 @@
          select * from demo.employee_employee e where employeeName = ?
 ]]>
    </sql>
-
+   
+   <sql id="getEmployeeByName"> 
+      <![CDATA[ 
+        SELECT * FROM demo.employee_employee e INNER JOIN demo.employee_department d
+        ON e.depId = d.depId WHERE e.employeeName = 'aaaa';
+]]>
+   </sql>
+   
 
 </custom-sql>

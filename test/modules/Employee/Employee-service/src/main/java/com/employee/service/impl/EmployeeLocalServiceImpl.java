@@ -25,6 +25,10 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 	
 	public List<Employee> getEmployeeByName(String employeeName){
 		return employeeFinder.getEmployeeByName(employeeName);
-		
 	}
+	public List<Employee> getEmployeeWithDepartmentByName(String employeeName){
+        return employeeFinder.getEmployeeWithDepartmentByName(employeeName);
+
+       
+    }
 }
