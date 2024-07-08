@@ -17,13 +17,15 @@ public class ModelListenerHook extends BaseModelListener<User> {
 	private static final Log _log = LogFactoryUtil.getLog(ModelListener.class);
 	
 	@Override
-	public void onAfterRemove(User model) throws ModelListenerException {
-		_log.info("User is deleted Successfully: " + model.getUserId());
+	public void onBeforeCreate(User model) throws ModelListenerException {
+		_log.info("in onBeforeCreate method");
+		_log.info("userModel : " + model);
 		super.onAfterRemove(model);
 	}
 	@Override
-	public void onBeforeRemove(User model) throws ModelListenerException {
-		_log.info("User is about to be deleted: " + model.getUserId());
+	public void onAfterCreate(User model) throws ModelListenerException {
+		_log.info("in onAfterCreate method");
+		_log.info("userModel : " + model);
 		super.onBeforeRemove(model);
 	}
 }

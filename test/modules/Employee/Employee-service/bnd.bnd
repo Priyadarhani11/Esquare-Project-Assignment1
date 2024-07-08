@@ -4,3 +4,17 @@ Bundle-Version: 1.0.0
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
 -dsannotations-options: inherit
+Export-Package: \
+	com.employee.service.base,\
+	com.employee.service,\
+	com.employee.exception,\
+	com.employee.model.impl,\
+	com.employee.model,\
+	com.employee.service.persistence.impl.constants,\
+	com.employee.service.persistence.impl,\
+	com.employee.service.persistence,\
+	com.employee.service.impl
+Import-Package: \
+    com.employee.model, \
+    
+    

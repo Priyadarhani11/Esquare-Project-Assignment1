@@ -6,10 +6,10 @@
 ]]>
    </sql>
    
-   <sql id="getEmployeeByName"> 
+   <sql id="getEmployeeWithDepartmentByName"> 
       <![CDATA[ 
         SELECT * FROM demo.employee_employee e INNER JOIN demo.employee_department d
-        ON e.depId = d.depId WHERE e.employeeName = 'aaaa';
+        ON e.depId = d.depId WHERE d.depName = ? 
 ]]>
    </sql>
    
